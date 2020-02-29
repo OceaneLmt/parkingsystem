@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 public class InputReaderUtil {
 
-	private static Scanner scan = new Scanner(System.in);
+	private Scanner scan = new Scanner(System.in);
 	private static final Logger logger = LogManager.getLogger("InputReaderUtil");
 
 	public int readSelection() {
@@ -32,6 +32,10 @@ public class InputReaderUtil {
 			System.out.println("Error reading input. Please enter a valid string for vehicle registration number");
 			throw e;
 		}
+	}
+
+	void setScan(Scanner scan) {
+		this.scan = scan;
 	}
 
 }

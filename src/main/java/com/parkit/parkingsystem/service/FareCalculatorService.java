@@ -6,7 +6,7 @@ import com.parkit.parkingsystem.model.Ticket;
 
 public class FareCalculatorService {
 
-	ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
+	private ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
 
 	public void calculateFareByType(Ticket ticket, double fareType) {
 		double diff = ticket.getOutTime().getTime() - ticket.getInTime().getTime();
@@ -14,7 +14,7 @@ public class FareCalculatorService {
 		int freeTimeInSeconds = 1800;
 
 		if (parkingSpotDAO.getRowsCountWithSameVehiculeNumber(ticket.getVehicleRegNumber()) > 0) {
-			ticket.setPrice((duration * fareType) * (5 / 100));
+			ticket.setPrice((duration * fareType) * (5d / 100));
 		} else if (duration <= freeTimeInSeconds) {
 			ticket.setPrice(0 * fareType);
 		} else {
@@ -38,5 +38,14 @@ public class FareCalculatorService {
 		default:
 			throw new IllegalArgumentException("Unkown Parking Type");
 		}
+	}
+
+	/**
+	 * Setter needed to make this class easily testable
+	 * 
+	 * @param parkingSpotDAO
+	 */
+	public void setParkingSpotDAO(ParkingSpotDAO parkingSpotDAO) {
+		this.parkingSpotDAO = parkingSpotDAO;
 	}
 }
