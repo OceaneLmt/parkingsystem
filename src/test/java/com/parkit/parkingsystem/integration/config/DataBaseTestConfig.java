@@ -1,10 +1,14 @@
 package com.parkit.parkingsystem.integration.config;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,14 +18,14 @@ import com.parkit.parkingsystem.config.DataBaseConfig;
 public class DataBaseTestConfig extends DataBaseConfig {
 
 	private static final Logger logger = LogManager.getLogger("DataBaseTestConfig");
+	private static final String dbConfigFilePath = "./DBConfig.properties";
 
 	@Override
 	public Connection getConnection() throws ClassNotFoundException, SQLException {
 		logger.info("Create DB connection");
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		return DriverManager.getConnection(
-				"jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
-				"root", "rootroot");
+		return DriverManager.getConnection(dataBaseProperties().getProperty("db.url"),
+				dataBaseProperties().getProperty("db.user"), dataBaseProperties().getProperty("db.password"));
 	}
 
 	@Override
@@ -58,5 +62,23 @@ public class DataBaseTestConfig extends DataBaseConfig {
 				logger.error("Error while closing result set", e);
 			}
 		}
+	}
+
+	private Properties dataBaseProperties() {
+		Properties prop = new Properties();
+		try (OutputStream output = new FileOutputStream(dbConfigFilePath)) {
+
+			// set the properties value
+			prop.setProperty("db.url",
+					"jdbc:mysql://localhost:3306/prod?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
+			prop.setProperty("db.user", "root");
+			prop.setProperty("db.password", "rootroot");
+
+			// save properties to project root folder
+			prop.store(output, null);
+		} catch (IOException io) {
+			logger.error("Failed to store data base properties", io);
+		}
+		return prop;
 	}
 }

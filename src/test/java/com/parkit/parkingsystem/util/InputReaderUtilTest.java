@@ -9,7 +9,6 @@ import java.util.Scanner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-//@ExtendWith(MockitoExtension.class)
 public class InputReaderUtilTest {
 
 	private InputReaderUtil inputReaderUtil;
