@@ -17,6 +17,14 @@ public class ParkingSpotDAO {
 
 	public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
+	/**
+	 * Counts how many times a vehicle registration number is stored in the DB
+	 * 
+	 * Used to know recurring customers
+	 * 
+	 * @param vehicleRegNumber
+	 * @return result
+	 */
 	public int getRowsCountWithSameVehiculeNumber(String vehicleRegNumber) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -82,9 +90,7 @@ public class ParkingSpotDAO {
 			return false;
 		} finally {
 			dataBaseConfig.closeConnection(con);
-			if (ps != null) {
-				dataBaseConfig.closePreparedStatement(ps);
-			}
+			dataBaseConfig.closePreparedStatement(ps);
 		}
 	}
 }

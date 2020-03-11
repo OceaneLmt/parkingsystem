@@ -64,6 +64,11 @@ public class DataBaseTestConfig extends DataBaseConfig {
 		}
 	}
 
+	/**
+	 * Writes a .properties file to store data base info for security
+	 * 
+	 * @return prop
+	 */
 	private Properties dataBaseProperties() {
 		Properties prop = new Properties();
 		try (OutputStream output = new FileOutputStream(dbConfigFilePath)) {

@@ -34,6 +34,9 @@ public class FareCalculatorServiceTest {
 		fareCalculatorService = new FareCalculatorService();
 	}
 
+	/**
+	 * Set up for calculateFareCarRecurringCustomer test
+	 */
 	private void setUpMockito() {
 		try {
 			when(parkingSpotDAO.getRowsCountWithSameVehiculeNumber(null)).thenReturn(1);
@@ -58,6 +61,9 @@ public class FareCalculatorServiceTest {
 		assertEquals(Fare.CAR_RATE_PER_HOUR, ticket.getPrice());
 	}
 
+	/**
+	 * Should give a 5% discount on parking fare
+	 */
 	@Test
 	public void calculateFareCarRecurringCustomer() {
 		setUpMockito();

@@ -8,6 +8,16 @@ public class FareCalculatorService {
 
 	private ParkingSpotDAO parkingSpotDAO = new ParkingSpotDAO();
 
+	/**
+	 * Calculate parking fare depending on recurrence and duration
+	 * 
+	 * if duration <= 30 min then free parking
+	 * 
+	 * if recurring customer then 5% discount
+	 * 
+	 * @param ticket
+	 * @param fareType
+	 */
 	public void calculateFareByType(Ticket ticket, double fareType) {
 		double diff = ticket.getOutTime().getTime() - ticket.getInTime().getTime();
 		double duration = diff / 1000;
@@ -22,6 +32,11 @@ public class FareCalculatorService {
 		}
 	}
 
+	/**
+	 * Calculate parking fare depending on vehicle type
+	 * 
+	 * @param ticket
+	 */
 	public void calculateFare(Ticket ticket) {
 		if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
 			throw new IllegalArgumentException("Out time provided is incorrect:" + ticket.getOutTime().toString());
