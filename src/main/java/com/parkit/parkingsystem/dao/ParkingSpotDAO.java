@@ -49,6 +49,12 @@ public class ParkingSpotDAO {
 		return result;
 	}
 
+	/**
+	 * Gives the next available parking slot
+	 * 
+	 * @param parkingType
+	 * @return the next available parking slot
+	 */
 	public int getNextAvailableSlot(ParkingType parkingType) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -74,23 +80,29 @@ public class ParkingSpotDAO {
 		return result;
 	}
 
+	/**
+	 * Update the availability for that parking slot
+	 * 
+	 * @param parkingSpot
+	 */
 	public boolean updateParking(ParkingSpot parkingSpot) {
-		// update the availability for that parking slot
 		Connection con = null;
 		PreparedStatement ps = null;
+		boolean result = false;
 		try {
 			con = dataBaseConfig.getConnection();
 			ps = con.prepareStatement(DBConstants.UPDATE_PARKING_SPOT);
 			ps.setBoolean(1, parkingSpot.isAvailable());
 			ps.setInt(2, parkingSpot.getId());
 			int updateRowCount = ps.executeUpdate();
-			return (updateRowCount == 1);
+			result = (updateRowCount == 1);
 		} catch (Exception ex) {
 			logger.error("Error updating parking info", ex);
-			return false;
+
 		} finally {
 			dataBaseConfig.closeConnection(con);
 			dataBaseConfig.closePreparedStatement(ps);
 		}
+		return result;
 	}
 }

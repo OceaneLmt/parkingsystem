@@ -20,6 +20,11 @@ public class TicketDAO {
 
 	public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
+	/**
+	 * This method is used to save ticket's info in the data base
+	 * 
+	 * @param ticket
+	 */
 	public boolean saveTicket(Ticket ticket) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -41,6 +46,12 @@ public class TicketDAO {
 		return false;
 	}
 
+	/**
+	 * This method is used to get the ticket from the database
+	 * 
+	 * @param vehicleRegNumber the number with which the customer registered himself
+	 * @return ticket
+	 */
 	public Ticket getTicket(String vehicleRegNumber) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -73,6 +84,12 @@ public class TicketDAO {
 		return ticket;
 	}
 
+	/**
+	 * This method is used to update ticket's info in the database
+	 * 
+	 * @param ticket
+	 * @return true if the ticket is correctly updated
+	 */
 	public boolean updateTicket(Ticket ticket) {
 		Connection con = null;
 		PreparedStatement ps = null;

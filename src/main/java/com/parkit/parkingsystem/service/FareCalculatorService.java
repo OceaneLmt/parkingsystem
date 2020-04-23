@@ -20,16 +20,17 @@ public class FareCalculatorService {
 	 */
 	public void calculateFareByType(Ticket ticket, double fareType) {
 		double diff = ticket.getOutTime().getTime() - ticket.getInTime().getTime();
-		double duration = diff / 1000;
-		int freeTimeInSeconds = 1800;
-
-		if (parkingSpotDAO.getRowsCountWithSameVehiculeNumber(ticket.getVehicleRegNumber()) > 0) {
-			ticket.setPrice((duration * fareType) * (5d / 100));
-		} else if (duration <= freeTimeInSeconds) {
+		double duration = diff / 3600000;
+		double freeTime = 0.5;
+		if (duration > freeTime
+				&& parkingSpotDAO.getRowsCountWithSameVehiculeNumber(ticket.getVehicleRegNumber()) > 1) {
+			ticket.setPrice((duration * fareType) * (95d / 100));
+		} else if (duration <= freeTime) {
 			ticket.setPrice(0 * fareType);
 		} else {
 			ticket.setPrice(duration * fareType);
 		}
+
 	}
 
 	/**
@@ -43,11 +44,11 @@ public class FareCalculatorService {
 		}
 		switch (ticket.getParkingSpot().getParkingType()) {
 		case CAR: {
-			calculateFareByType(ticket, Fare.CAR_RATE_PER_SECOND);
+			calculateFareByType(ticket, Fare.CAR_RATE_PER_HOUR);
 			break;
 		}
 		case BIKE: {
-			calculateFareByType(ticket, Fare.BIKE_RATE_PER_SECOND);
+			calculateFareByType(ticket, Fare.BIKE_RATE_PER_HOUR);
 			break;
 		}
 		default:

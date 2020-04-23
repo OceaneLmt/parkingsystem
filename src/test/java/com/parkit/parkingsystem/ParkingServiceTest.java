@@ -36,6 +36,7 @@ public class ParkingServiceTest {
 	@BeforeEach
 	private void setUpPerTest() {
 		try {
+			// GIVEN
 			when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
 			ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
 			Ticket ticket = new Ticket();
@@ -52,9 +53,14 @@ public class ParkingServiceTest {
 		}
 	}
 
+	/**
+	 * Verify that the parking is updated after a vehicle exits
+	 */
 	@Test
 	public void processExitingVehicleTest() {
+		// WHEN
 		parkingService.processExitingVehicle();
+		// THEN
 		verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
 	}
 }

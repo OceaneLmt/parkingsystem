@@ -38,7 +38,7 @@ public class ParkingService {
 							"Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
 				}
 				parkingSpot.setAvailable(false);
-				parkingSpotDAO.updateParking(parkingSpot);// allot this parking space and mark it's availability as
+				parkingSpotDAO.updateParking(parkingSpot);// allot this parking spot and mark it's availability as
 															// false
 				Date inTime = new Date();
 				Ticket ticket = new Ticket();
@@ -63,6 +63,11 @@ public class ParkingService {
 		return inputReaderUtil.readVehicleRegistrationNumber();
 	}
 
+	/**
+	 * This method is used to get the next parking spot if there is one available
+	 * 
+	 * @return parkingSpot
+	 */
 	public ParkingSpot getNextParkingNumberIfAvailable() {
 		int parkingNumber = 0;
 		ParkingSpot parkingSpot = null;

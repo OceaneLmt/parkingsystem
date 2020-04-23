@@ -48,6 +48,7 @@ public class ParkingDataBaseIT {
 
 	@BeforeEach
 	private void setUpPerTest() throws Exception {
+		// GIVEN
 		when(inputReaderUtil.readSelection()).thenReturn(1);
 		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
 		dataBasePrepareService.clearDataBaseEntries();
@@ -57,24 +58,37 @@ public class ParkingDataBaseIT {
 	private static void tearDown() {
 	}
 
+	/**
+	 * Test that a ticket is actually saved in the data base and that Parking table
+	 * is updated with availability
+	 */
 	@Test
 	public void testParkingACar() throws Exception {
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+		// WHEN
 		parkingService.processIncomingVehicle();
 		String vehString = inputReaderUtil.readVehicleRegistrationNumber();
+		// THEN
 		assertEquals(vehString, ticketDAO.getTicket(vehString).getVehicleRegNumber());
 		assertEquals(false, ticketDAO.getTicket(vehString).getParkingSpot().isAvailable());
 
 	}
 
+	/**
+	 * Test that the parking fare generated and parking exits time are populated
+	 * correctly in the database
+	 */
 	@Test
 	public void testParkingLotExit() throws Exception {
 		String vehString = inputReaderUtil.readVehicleRegistrationNumber();
+		// GIVEN
 		testParkingACar();
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		assertEquals(0, ticketDAO.getTicket(vehString).getPrice());
 		assertNull(ticketDAO.getTicket(vehString).getOutTime());
+		// WHEN
 		parkingService.processExitingVehicle();
+		// THEN
 		assertNotEquals(0, ticketDAO.getTicket(vehString).getPrice());
 		assertNotNull(ticketDAO.getTicket(vehString).getOutTime());
 
